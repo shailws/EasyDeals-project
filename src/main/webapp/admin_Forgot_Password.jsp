@@ -19,39 +19,39 @@
 
 	<%
 	String mobile = request.getParameter("mobile");
-	String error = "";
+		String error = "";
 
-	if (request.getParameter("sendOtp") != null) {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
+		if (request.getParameter("sendOtp") != null) {
+			try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
 
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM user WHERE mobileno=?");
-			ps.setString(1, mobile);
-			ResultSet rs = ps.executeQuery();
+		PreparedStatement ps = con.prepareStatement("SELECT * FROM admin WHERE phone=?");
+		ps.setString(1, mobile);
+		ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-		// Generate OTP
-		int otp = new Random().nextInt(900000) + 100000;
+		if (rs.next()) {
+			// Generate OTP
+			int otp = new Random().nextInt(900000) + 100000;
 
-		// Store OTP & mobile in session
-		session.setAttribute("otp", otp);
-		session.setAttribute("mobile", mobile);
+			// Store OTP & mobile in session
+			session.setAttribute("otp", otp);
+			session.setAttribute("mobile", mobile);
 
-		// Show OTP temporarily
-		out.println("<script>alert(' Please Copy Your OTP: " + otp + "');</script>");
+			// Show OTP temporarily
+			out.println("<script>alert(' Please Copy Your OTP: " + otp + "');</script>");
 
-		// Redirect to verify page
-		out.println("<script>setTimeout(function(){ window.location='verify_otp.jsp'; }, 1000);</script>");
+			// Redirect to verify page
+			out.println("<script>setTimeout(function(){ window.location='admin_Verify_Otp.jsp'; }, 1000);</script>");
 
-			} else {
-		error = "Mobile number not registered!";
-			}
-
-		} catch (Exception e) {
-			error = "Something went wrong!";
-			e.printStackTrace();
+		} else {
+			error = "Mobile number not registered!";
 		}
+
+	} catch (Exception e) {
+		error = "Something went wrong!";
+		e.printStackTrace();
+	}
 	}
 	%>
 
@@ -98,7 +98,7 @@
 						</div>
 
 						<div class="card-footer text-center">
-							<a href="login.jsp" class="text-decoration-none">Back to
+							<a href="adminLogin.jsp" class="text-decoration-none">Back to
 								Login</a>
 						</div>
 

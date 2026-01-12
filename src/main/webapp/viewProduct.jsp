@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>View Product</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style2.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -18,8 +18,15 @@
 	<%@ include file="header.jsp"%>
 
 	<section>
-		<div class="container p-3 pt-5 mt-5">
-			<div class="card shadow rounded-4">
+		<div class="container p-3 mt-5 pt-4 min-vh-100">
+
+			<!-- ===== BACK TO ADMIN BUTTON ===== -->
+			<div class="mb-3 text-start">
+				<a href="admin.jsp" class="btn btn-outline-primary"> ← Back to
+					Admin Dashboard </a>
+			</div>
+
+			<div class="card card shadow p-3 mb-5 bg-body-tertiary rounded">
 				<div class="card-header text-center bg-primary text-white fs-5">
 					View Product</div>
 				<div class="card-body">
@@ -66,7 +73,8 @@
 					%>
 
 					<div class="table-responsive">
-						<table class="table table-bordered table-striped table-hover">
+						<table class="table table-bordered table-hover">
+							<!-- table-striped -->
 							<thead class="table-light text-center">
 								<tr>
 									<th>Sl No</th>
@@ -81,7 +89,7 @@
 									<th>Action</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="table-light text-center">
 								<%
 								try {
 									Class.forName("com.mysql.cj.jdbc.Driver");

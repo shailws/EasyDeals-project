@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard</title>
 
-<link rel="stylesheet" href="style2.css">
+<link rel="stylesheet" href="./css/style1.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -19,13 +19,13 @@
 	<%@ include file="header.jsp"%>
 
 	<section>
-		<div class="container mt-5 py-5">
-			<p class="text-center fs-3 mt-4">Admin Dashboard</p>
+		<div class="container mt-5 py-5 min-vh-100">
+			<p class="text-center fs-3 mt-5">Admin Dashboard</p>
 
-			<div class="row g-4">
+			<div class="row g-5 d-flex justify-content-center align-items-center mt-3">
 				<!-- "g-4" adds gap between columns -->
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="addProduct.jsp" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-primary">
@@ -36,7 +36,7 @@
 					</a>
 				</div>
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="addCategory.jsp" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-warning">
@@ -47,7 +47,7 @@
 					</a>
 				</div>
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="viewProduct.jsp" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-success">
@@ -58,7 +58,7 @@
 					</a>
 				</div>
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="#" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-warning">
@@ -69,7 +69,7 @@
 					</a>
 				</div>
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="users.jsp" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-primary">
@@ -80,7 +80,7 @@
 					</a>
 				</div>
 
-				<div class="col-lg-4 col-md-6 col-sm-12">
+				<div class="col-md-6 col-lg-4">
 					<a href="#" class="text-decoration-none">
 						<div class="card card-sh">
 							<div class="card-body text-center text-primary">

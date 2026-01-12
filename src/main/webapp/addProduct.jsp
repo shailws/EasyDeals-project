@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Product Form</title>
-<link rel="stylesheet" href="style2.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -15,68 +14,38 @@
 <body>
 	<%@ include file="header.jsp"%>
 
-	<div class="container  p-3 pt-5 mt-5">
-		<div class="row justify-content-center">
+	<div class="container p-3 mt-5 min-vh-100">
+		<div class="row d-flex justify-content-center pt-4">
 			<div class="col-lg-6 col-md-8 col-sm-10">
 
-				<%-- Process Form Submission --%>
-				<%
-				String productMessage = "";
+				<!-- ===== BACK TO ADMIN BUTTON ===== -->
+				<div class="mb-3 text-start">
+					<a href="admin.jsp" class="btn btn-outline-primary"> ← Back to
+						Admin Dashboard </a>
+				</div>
 
-				if (request.getParameter("add") != null) {
-
-					try {
-						String P_title = request.getParameter("p_title");
-						String P_description = request.getParameter("p_description");
-						String P_category = request.getParameter("p_category");
-						String IsActive = request.getParameter("isActive");
-						int P_stock = Integer.parseInt(request.getParameter("p_stock"));
-						String P_image = request.getParameter("p_image");
-						double P_price = Double.parseDouble(request.getParameter("p_price"));
-						int P_discount = Integer.parseInt(request.getParameter("p_discount"));
-
-						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
-						PreparedStatement ps = con.prepareStatement(
-						"INSERT INTO product (p_title, p_description, p_category, p_price, isActive, p_stock, p_image, p_discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-						ps.setString(1, P_title);
-						ps.setString(2, P_description);
-						ps.setString(3, P_category);
-						ps.setDouble(4, P_price);
-						ps.setString(5, IsActive);
-						ps.setInt(6, P_stock);
-						ps.setString(7, P_image);
-						ps.setInt(8, P_discount);
-
-						int inserted = ps.executeUpdate();
-						con.close();
-
-						if (inserted > 0) {
-					productMessage = "product has been added successfully";
-
-						}
-					} catch (Exception e) {
-						e.getMessage();
-					}
-
-				}
-				%>
-
-				<div class="card shadow rounded-4">
+				<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
 					<div class="card-header text-center bg-primary text-white fs-5">Add
 						Product</div>
 
+					<!-- ===== ADD PRODUCT SUCCESS / ERROR MESSAGE ===== -->
 					<%
-					if (!productMessage.isEmpty()) {
-					%>
+					String p_Add = (String) session.getAttribute("p_Add");
 
-					<div class="alert alert-success text-center mt-3"><%=productMessage%></div>
+					if (p_Add != null && !p_Add.isEmpty()) {
+					%>
+					<div
+						class="alert text-center mt-3 <%=p_Add.equalsIgnoreCase("Product has been added successfully.") ? "alert-success" : "alert-danger"%>">
+						<%=p_Add%>
+					</div>
 					<%
+					session.removeAttribute("p_Add");
 					}
 					%>
 
 					<div class="card-body">
-						<form action="addProduct.jsp" method="POST">
+						<form action="addProduct" method="post"
+							enctype="multipart/form-data">
 							<div class="mb-3">
 								<label class="form-label">Enter Title</label> <input type="text"
 									name="p_title" class="form-control" required>
@@ -89,7 +58,7 @@
 							<div class="mb-3">
 								<label class="form-label">Category</label> <select
 									class="form-select" name="p_category" required>
-									<option value="">---Select---</option>
+									<option value="#">---Select---</option>
 									<%
 									try {
 										Class.forName("com.mysql.cj.jdbc.Driver");
@@ -118,7 +87,7 @@
 									type="number" name="p_discount" class="form-control" required>
 							</div>
 
-							<script>
+							<!-- <script>
 										document.addEventListener("DOMContentLoaded", function () {
 											const discountInput = document.querySelector("input[name='p_discount']");
 											const form = document.querySelector("form");
@@ -141,7 +110,7 @@
 												}
 											});
 										});
-							</script>
+							</script> -->
 
 
 
@@ -164,11 +133,11 @@
 								</div>
 								<div class="col-md-6">
 									<label class="form-label">Upload Image</label> <input
-										type="text" name="p_image" class="form-control">
+										type="file" name="p_image" class="form-control">
 								</div>
 							</div>
-							<div class="d-grid mt-4">
-								<button type="submit" name="add" class="btn btn-primary">Add</button>
+							<div class="mt-4">
+								<button type="submit" name="add" class="btn btn-primary w-100">Add</button>
 							</div>
 						</form>
 					</div>
