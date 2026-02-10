@@ -5,7 +5,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<!-- REQUIRED: stops mobile from shrinking content -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Users List</title>
+
 <link rel="stylesheet" href="style2.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -13,18 +18,29 @@
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 	rel="stylesheet">
+
 </head>
+
 <body>
 	<%@ include file="header.jsp"%>
 
 	<section>
-		<div class="container p-3 pt-5 mt-5">
-			<div class="card shadow rounded-4">
+		<div class="container p-3 mt-5 pt-5 min-vh-100">
+
+			<div class="mb-3 text-start">
+				<a href="admin.jsp" class="btn btn-outline-primary"> ← Back to
+					Admin Dashboard </a>
+			</div>
+
+			<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
 				<div class="card-header text-center bg-primary text-white fs-5">
 					Users</div>
+
 				<div class="card-body">
+
+					<!-- SCROLLABLE TABLE -->
 					<div class="table-responsive">
-						<table class="table table-bordered table-striped table-hover">
+						<table class="table table-bordered table-hover w=100">
 							<thead class="table-light text-center">
 								<tr>
 									<th>Sl No</th>
@@ -35,50 +51,46 @@
 									<th>Address</th>
 								</tr>
 							</thead>
-							<tbody>
+
+							<tbody class="table-light text-center">
 								<%
 								try {
 									Class.forName("com.mysql.cj.jdbc.Driver");
 									Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
+
 									PreparedStatement ps = con.prepareStatement("SELECT * FROM user");
 									ResultSet rs = ps.executeQuery();
+
 									while (rs.next()) {
-										String Sr_no = rs.getString("id");
-										String Name7 = rs.getString("name");
-										String Mobileno = rs.getString("mobileno");
+										String srNO = rs.getString("id");
+										String p_image = rs.getString("Profile_img");
+										String Name1 = rs.getString("name");
 										String Email = rs.getString("email");
+										String mobilNo = rs.getString("mobileno");
 										String Address = rs.getString("address");
-										String Profile_img = rs.getString("Profile_img");
 								%>
 								<tr>
-									<td class="text-center"><%=Sr_no%></td>
-									<td class="text-center">
-										<%
-										if (Profile_img != null && !Profile_img.isEmpty()) {
-										%> <img src="<%=Profile_img%>" alt="Profile"
-										class="img-fluid rounded-circle"
-										style="width: 50px; height: 50px;"> <%
- } else {
- %> <img src="default-profile.png" alt="Default Profile"
-										class="img-fluid rounded-circle"
-										style="width: 50px; height: 50px;"> <%
- }
- %>
+									<td><%=srNO%></td>
+
+									<td><img src="<%=p_image%>"
+										style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
 									</td>
-									<td class="text-break"><%=Name7%></td>
-									<td class="text-break"><%=Email%></td>
-									<td class="text-nowrap"><%=Mobileno%></td>
-									<td class="text-break"><%=Address%></td>
+
+									<td><%=Name1%></td>
+									<td><%=Email%></td>
+									<td><%=mobilNo%></td>
+									<td><%=Address%></td>
 								</tr>
 								<%
 								}
 								} catch (Exception e) {
-								out.println("<tr><td colspan='6' class='text-danger text-center'>Error: " + e.getMessage() + "</td></tr>");
+								e.printStackTrace();
 								}
 								%>
 							</tbody>
 						</table>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -86,9 +98,6 @@
 
 	<%@ include file="footer.jsp"%>
 
-
-
-	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

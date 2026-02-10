@@ -15,62 +15,6 @@
 </head>
 <body>
 
-	<%
-	String name1 = request.getParameter("name");
-	String mobileno = request.getParameter("mobileno");
-	String email = request.getParameter("email");
-	String address = request.getParameter("address");
-	String city = request.getParameter("city");
-	String state = request.getParameter("state");
-	String pincode = request.getParameter("pincode");
-	String password = request.getParameter("password");
-	String cpassword = request.getParameter("cpassword");
-	String profile_img = request.getParameter("Profile_img");
-
-	String errorMsg = "";
-
-	if (request.getParameter("register") != null) {
-
-		if (!password.equals(cpassword)) {
-			errorMsg = "Password and Confirm Password didn't match!";
-		} else {
-
-			try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
-		PreparedStatement pst = con.prepareStatement(
-				"INSERT INTO user (name, mobileno, email, address, city, state, pincode, password, Profile_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		pst.setString(1, name1);
-		pst.setString(2, mobileno);
-		pst.setString(3, email);
-		pst.setString(4, address);
-		pst.setString(5, city);
-		pst.setString(6, state);
-		pst.setString(7, pincode);
-		pst.setString(8, password);
-		pst.setString(9, profile_img);
-
-		int result = pst.executeUpdate();
-
-		if (result > 0) {
-			response.sendRedirect("login.jsp");
-		}
-
-			} catch (Exception e) {
-		e.printStackTrace();
-
-		if (e.getMessage().contains("mobileno")) {
-			errorMsg = "Mobile number is already registered!";
-		} else if (e.getMessage().contains("email")) {
-			errorMsg = "Email is already registered!";
-		} else {
-			errorMsg = "Somthing went wrong";
-		}
-			}
-		}
-	}
-	%>
-
 	<%@ include file="header.jsp"%>
 	<!-- Registration Form Section -->
 	<section>
@@ -85,20 +29,24 @@
 						<div class="card-header text-center">
 							<h4>Register</h4>
 
+							<!-- ===== ADD USER SUCCESS / ERROR MESSAGE ===== -->
 							<%
-							if (errorMsg != null && !errorMsg.trim().isEmpty()) {
+							String uR_message = (String) session.getAttribute("uR_message");
+
+							if (uR_message != null && !uR_message.isEmpty()) {
 							%>
-							<div class="alert alert-danger mt-2" role="alert">
-								<%=errorMsg%>
+							<div class="alert text-center mt-3 alert-danger">
+								<%=uR_message%>
 							</div>
 							<%
+							session.removeAttribute("uR_message");
 							}
 							%>
 
-
 						</div>
 						<div class="card-body">
-							<form action="#" method="Get" enctype="multipart/form-data">
+							<form action="registrationUser" method="post"
+								enctype="multipart/form-data">
 								<div class="row g-3">
 									<div class="col-md-6">
 										<label class="form-label" for="name1">Name</label> <input

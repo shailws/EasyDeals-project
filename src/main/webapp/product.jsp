@@ -12,7 +12,7 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="style2.css">
+
 
 </head>
 <body>
@@ -20,6 +20,7 @@
 	<%@ include file="header.jsp"%>
 
 	<section class="mt-5">
+	
 		<!-- Search Bar -->
 		<div class="container-fluid bg-primary p-4 text-center">
 			<form action="product.jsp" method="get"
@@ -29,7 +30,7 @@
 						placeholder="Search for products">
 				</div>
 				<div class="col-auto">
-					<button class="btn btn-light text-dark">
+					<button class="btn btn-light text-dark" type="submit">
 						<i class="fa-solid fa-magnifying-glass"></i> Search
 					</button>
 				</div>
@@ -37,27 +38,33 @@
 		</div>
 
 		<!-- Main Content -->
-		<div class="container py-5">
+		<div class="container-fluid py-5">
 			<div class="row">
+
 				<!-- Categories -->
-				<div class="col-md-3 mb-4">
-					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+				<div class="col-12 col-md-3 mb-4 mb-md-0">
+					<div class="card shadow bg-body-tertiary rounde h-100">
 						<div class="card-body">
-							<h5 class="card-title text-center">Categories</h5>
+							<h5 class="card-title text-center mb-3">Categories</h5>
+
 							<div class="list-group">
 								<a href="product.jsp"
-									class="list-group-item list-group-item-action">All</a>
+									class="list-group-item list-group-item-action text-center">
+									All </a>
+
 								<%
 								try {
 									Class.forName("com.mysql.cj.jdbc.Driver");
 									Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
 									PreparedStatement ps = con.prepareStatement("SELECT category_name FROM category WHERE isActive = 'active'");
 									ResultSet rs = ps.executeQuery();
+
 									while (rs.next()) {
 										String Category_name = rs.getString("category_name");
 								%>
-								<a href="product.jsp?category=<%=Category_name%>"
-									class="list-group-item list-group-item-action"> <%=Category_name%>
+								<a href="product.jsp?category1=<%=Category_name%>"
+									class="list-group-item list-group-item-action text-center">
+									<%=Category_name%>
 								</a>
 								<%
 								}
@@ -72,13 +79,14 @@
 				</div>
 
 				<!-- Products -->
-				<div class="col-md-9">
-					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+				<div class="col-12 col-md-9">
+					<div class="card shadow bg-body-tertiary rounde vh-100">
 						<div class="card-body">
-							<h3 class="text-center mb-4">Products</h3>
-							<div class="row g-4">
+							<h3 class="card-title text-center mb-4">Products</h3>
+
+							<div class="row g-3">
 								<%
-								String selectedCategory = request.getParameter("category");
+								String selectedCategory = request.getParameter("category1");
 								String searchKeyword = request.getParameter("ch");
 
 								try {
@@ -97,10 +105,10 @@
 									}
 
 									ResultSet rs = ps.executeQuery();
-									boolean hasProducts = false;
+									boolean hasProducts1 = false;
 
 									while (rs.next()) {
-										hasProducts = true;
+										hasProducts1 = true;
 										String Sr_no = rs.getString("sr_no");
 										String P_title = rs.getString("p_title");
 										double P_price = rs.getDouble("p_price");
@@ -108,24 +116,36 @@
 										int P_discount = rs.getInt("p_discount");
 										double discountedPrice = P_price - (P_price * P_discount / 100);
 								%>
-								<div class="col-12 col-sm-6 col-md-4">
+
+								<!-- Product Card -->
+								<div class="col-12 col-sm-6 col-md-6 col-lg-4">
 									<div
-										class="card h-100 text-center shadow p-3 mb-5 bg-body-tertiary rounded d-flex flex-column">
-										<div class="product-img-wrapper p-3" style="height: 200px;">
+										class="card shadow-sm text-center d-flex flex-column">
+
+										<!-- Image -->
+										<div class="p-3" style="height: 180px;">
 											<img src="<%=P_image%>" alt="Product Image"
-												class="img-fluid h-100" style="object-fit: contain;">
+												class="img-fluid w-100 h-100" style="object-fit: contain;">
 										</div>
+
+										<!-- Details -->
 										<div class="card-body d-flex flex-column">
-											<h5 class="card-title text-truncate mb-2"><%=P_title%></h5>
+											<h6 class="card-title text-truncate mb-2">
+												<%=P_title%>
+											</h6>
+
 											<p class="card-text mb-3">
-												<strong>₹<%=String.format("%.2f", discountedPrice)%></strong><br>
-												<small class="text-muted"><del>
-														₹<%=P_price%></del></small> <span class="text-success ms-1"><%=P_discount%>%
-													off</span>
+												<strong> ₹<%=String.format("%.2f", discountedPrice)%>
+												</strong><br> <small class="text-muted"> <del>
+														₹<%=P_price%></del>
+												</small> <span class="text-success ms-1"> <%=P_discount%>%
+													off
+												</span>
 											</p>
+
 											<div class="mt-auto">
 												<a href="pdetails.jsp?sr_no=<%=Sr_no%>"
-													class="btn btn-primary w-100">View Details</a>
+													class="btn btn-primary w-100"> View Details </a>
 											</div>
 										</div>
 									</div>
@@ -133,11 +153,12 @@
 
 								<%
 								}
-								if (!hasProducts) {
+
+								if (!hasProducts1) {
 								%>
 								<div class="col-12">
-									<div class="alert alert-info text-center" role="alert">
-										No products found.</div>
+									<div class="alert alert-info text-center">No products
+										found.</div>
 								</div>
 								<%
 								}
@@ -154,9 +175,10 @@
 			</div>
 		</div>
 
+
 	</section>
 
-	 <%@ include file="footer.jsp"%> 
+	<%@ include file="footer.jsp"%>
 
 	<!-- Bootstrap JS -->
 	<script

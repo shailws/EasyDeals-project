@@ -30,45 +30,37 @@
 				<div class="card-header text-center bg-primary text-white fs-5">
 					View Product</div>
 				<div class="card-body">
+
+					<!-- ===== DELETE SUCCESS / ERROR MESSAGE ===== -->
 					<%
-					String deleteMessage = "";
+					String PD_message = (String) session.getAttribute("pd_message");
 
-					if (request.getParameter("delete") != null) {
-						try {
-							int SR_no = Integer.parseInt(request.getParameter("delete_id"));
-							Class.forName("com.mysql.cj.jdbc.Driver");
-							Connection con3 = DriverManager.getConnection("jdbc:mysql://localhost:3306/easydeals", "root", "root");
-							PreparedStatement ps3 = con3.prepareStatement("DELETE FROM product WHERE sr_no=?");
-							ps3.setInt(1, SR_no);
-							int rowDeleted = ps3.executeUpdate();
-							if (rowDeleted > 0) {
-						deleteMessage = "Product has been deleted successfully";
-
-							}
-						} catch (Exception e) {
-							e.getMessage();
-						}
+					if (PD_message != null && !PD_message.isEmpty()) {
+					%>
+					<div
+						class="alert text-center mt-3 <%=PD_message.equalsIgnoreCase("Product has been deleted successfully.") ? "alert-success" : "alert-danger"%>">
+						<%=PD_message%>
+					</div>
+					<%
+					session.removeAttribute("pd_message");
 					}
 					%>
 
-					<%
-					if (!deleteMessage.isEmpty()) {
-					%>
-					<div class="alert alert-success text-center mt-3"><%=deleteMessage%></div>
-					<%
-					}
-					%>
+					<!------------------------------------------------------------------------------------------------------------------  -->
 
-					<%
-					String updateMessage = "";
 
-					if (request.getParameter("updateMessage") != null) {
-						updateMessage = request.getParameter("updateMessage");
-					}
-					if (!updateMessage.isEmpty()) {
-					%>
-					<div class="alert alert-success text-center mt-3"><%=updateMessage%></div>
+					<!-- ===== DELETE SUCCESS / ERROR MESSAGE ===== -->
 					<%
+					String PU_message = (String) session.getAttribute("pU_message");
+
+					if (PU_message != null && !PU_message.isEmpty()) {
+					%>
+					<div
+						class="alert text-center mt-3 <%=PU_message.equalsIgnoreCase("Product has been updated successfully.") ? "alert-success" : "alert-danger"%>">
+						<%=PU_message%>
+					</div>
+					<%
+					session.removeAttribute("pU_message");
 					}
 					%>
 
@@ -122,7 +114,7 @@
 									<td>
 										<div class="d-flex gap-2">
 
-											<form method="get">
+											<form action="DeleteProduct" method="post">
 												<input type="hidden" name="delete_id" value="<%=Sr_no%>">
 												<button class="btn btn-sm btn-danger" type="submit"
 													name="delete">
@@ -131,14 +123,11 @@
 											</form>
 
 
+											<button type="button" class="btn btn-primary btn-sm"
+												data-bs-toggle="modal" data-bs-target="#editModal<%=Sr_no%>">
+												<i class="fa-solid fa-pen-to-square fa-1x"></i> Edit
+											</button>
 
-											<form method="get">
-												<button type="button" class="btn btn-primary btn-sm"
-													data-bs-toggle="modal"
-													data-bs-target="#editModal<%=Sr_no%>">
-													<i class="fa-solid fa-pen-to-square fa-1x"></i> Edit
-												</button>
-											</form>
 											<!-- Bootstrap Modal (Unique ID per Row) -->
 											<div class="modal fade" id="editModal<%=Sr_no%>"
 												tabindex="-1" aria-labelledby="editModalLabel"
@@ -146,41 +135,41 @@
 												<div class="modal-dialog">
 													<div class="modal-content">
 														<div class="modal-header">
-															<h5 class="modal-title" id="editModalLabel">Edit
-																Product</h5>
+															<h5 class="modal-title">Edit Product</h5>
 															<button type="button" class="btn-close"
 																data-bs-dismiss="modal" aria-label="Close"></button>
 														</div>
 														<div class="modal-body">
-															<form method="get" action="update_product.jsp">
+															<form method="post" action="updateProduct"
+																enctype="multipart/form-data">
 																<!-- Hidden field to send the product ID -->
 																<input type="hidden" name="update_id" value="<%=Sr_no%>">
 
+																<!-- Upload Image -->
 																<div class="mb-3">
-																	<label class="form-label">Image Url</label> <input
-																		type="text" name="p_image" class="form-control"
-																		placeholder="Enter Image Url" required>
+																	<label class="form-label fw-bold">Product Image</label>
+																	<input type="file" name="p_img" class="form-control"
+																		required> <small class="text-muted">
+																		Supported formats: JPG, PNG, JPEG </small>
 																</div>
 
 																<div class="mb-3">
-																	<label class="form-label">Product Title</label> <input
-																		type="text" name="p_title" class="form-control"
+																	<label class="form-label fw-bold">Product Title</label>
+																	<input type="text" name="p_title" class="form-control"
 																		placeholder="Enter Product Title" required>
 																</div>
 
 																<div class="mb-3">
-																	<label class="form-label">Product p_description</label>
-
+																	<label class="form-label fw-bold">Product
+																		p_description</label>
 
 																	<textarea rows="3" name="p_description"
 																		placeholder="Enter Product Description"
 																		class="form-control" required></textarea>
 																</div>
 
-
-
 																<div class="mb-3">
-																	<label class="form-label">Category</label> <select
+																	<label class="form-label fw-bold">Category</label> <select
 																		class="form-select" name="p_category" required>
 																		<option value="">---Select---</option>
 																		<%
@@ -204,22 +193,20 @@
 																</div>
 
 
-
-
-
 																<div class="mb-3">
-																	<label class="form-label">Product Price</label> <input
-																		type="number" name="p_price" class="form-control"
-																		placeholder="Enter Product Price" required>
+																	<label class="form-label fw-bold">Product Price</label>
+																	<input type="number" name="p_price"
+																		class="form-control" placeholder="Enter Product Price"
+																		required>
 																</div>
 																<div class="mb-3">
-																	<label class="form-label">Product Discount (%)</label>
-																	<input type="number" name="p_discount"
+																	<label class="form-label fw-bold">Product
+																		Discount (%)</label> <input type="number" name="p_discount"
 																		class="form-control"
 																		placeholder="Enter Product Discount" required>
 																</div>
 
-																<script>
+																<!-- <script>
 															    document.addEventListener("DOMContentLoaded", function () {
 															        const forms = document.querySelectorAll("form");
 															
@@ -247,33 +234,42 @@
 															            }
 															        });
 															    });
-															</script>
+															</script> -->
 
 
+																<!-- Status -->
 																<div class="mb-3">
-																	<label class="form-label">Product Status</label>
-																	<div class="form-check">
+																	<label class="form-label fw-bold d-block">Product
+																		Status</label>
+
+																	<div class="form-check d-inline-block">
 																		<input class="form-check-input" type="radio"
 																			name="isActive" value="active" checked> <label
 																			class="form-check-label">Active</label>
 																	</div>
-																	<div class="form-check">
+
+																	<div class="form-check d-inline-block">
 																		<input class="form-check-input" type="radio"
 																			name="isActive" value="inactive"> <label
 																			class="form-check-label">Inactive</label>
 																	</div>
 																</div>
 																<div class="mb-3">
-																	<label class="form-label">Product Stock</label> <input
-																		type="number" name="p_stock" class="form-control"
-																		placeholder="Enter Product Stock" required>
+																	<label class="form-label fw-bold">Product Stock</label>
+																	<input type="number" name="p_stock"
+																		class="form-control" placeholder="Enter Product Stock"
+																		required>
 																</div>
 
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-secondary"
-																		data-bs-dismiss="modal">Close</button>
+																<!-- Modal Footer -->
+																<div class="modal-footer d-flex justify-content-center">
+																	<button type="button" class="btn btn-outline-secondary"
+																		data-bs-dismiss="modal">Cancel</button>
 																	<button type="submit" name="update"
-																		class="btn btn-primary">Update</button>
+																		class="btn btn-primary">
+																		<i class="fa-solid fa-floppy-disk me-1"></i> Update
+																		Product
+																	</button>
 																</div>
 															</form>
 														</div>

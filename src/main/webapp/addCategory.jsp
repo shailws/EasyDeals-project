@@ -179,43 +179,57 @@
 																<form action="updateCategory" method="post"
 																	enctype="multipart/form-data">
 
-																	<!-- Hidden field to send the product ID -->
+																	<!-- Hidden field -->
 																	<input type="hidden" name="update_id"
 																		value="<%=Sr_no%>">
 
+																	<!-- Category Name -->
 																	<div class="mb-3">
-																		<label class="form-label">Enter Category</label> <input
-																			type="text" class="form-control" name="category_name"
-																			required>
+																		<label class="form-label fw-bold">Category
+																			Name</label> <input type="text" class="form-control"
+																			name="category_name"
+																			placeholder="Enter category name" required>
 																	</div>
 
+																	<!-- Status -->
 																	<div class="mb-3">
-																		<label class="form-label">Status</label>
-																		<div class="form-check">
+																		<label class="form-label fw-bold d-block">Status</label>
+
+																		<div class="form-check d-inline-block">
 																			<input class="form-check-input" type="radio"
 																				name="isActive" value="active" checked> <label
 																				class="form-check-label">Active</label>
 																		</div>
-																		<div class="form-check">
+
+																		<div class="form-check d-inline-block">
 																			<input class="form-check-input" type="radio"
 																				name="isActive" value="inactive"> <label
 																				class="form-check-label">Inactive</label>
 																		</div>
 																	</div>
 
+																	<!-- Upload Image -->
 																	<div class="mb-3">
-																		<label class="form-label">Upload Image</label> <input
-																			type="file" name="category_img" class="form-control"
-																			required>
+																		<label class="form-label fw-bold">Category
+																			Image</label> <input type="file" name="category_img"
+																			class="form-control" accept="image/*" required>
+																		<small class="text-muted"> Supported formats:
+																			JPG, PNG, JPEG </small>
 																	</div>
 
-																	<div class="modal-footer">
-																		<button type="button" class="btn btn-secondary"
-																			data-bs-dismiss="modal">Close</button>
+																	<!-- Modal Footer -->
+																	<div class="modal-footer d-flex justify-content-center">
+																		<button type="button"
+																			class="btn btn-outline-secondary"
+																			data-bs-dismiss="modal">Cancel</button>
 																		<button type="submit" name="update"
-																			class="btn btn-primary">Update</button>
+																			class="btn btn-primary">
+																			<i class="fa-solid fa-floppy-disk me-1"></i> Update
+																			Category
+																		</button>
 																	</div>
 																</form>
+
 															</div>
 														</div>
 													</div>
